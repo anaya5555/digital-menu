@@ -1,49 +1,54 @@
-/// src/App.js
+// src/App.js
 import React, { useState } from "react";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import CustomerMenu from "./CustomerMenu";
 import AdminPage from "./AdminPage";
 
 function App() {
   const [isAdmin, setIsAdmin] = useState(false);
-  const [showPasswordPrompt, setShowPasswordPrompt] = useState(false);
   const [passwordInput, setPasswordInput] = useState("");
 
-  const correctPassword = "testtest"; // 👈 change this to your secret password
+  const correctPassword = "test2000"; // Change this to your password
 
-  const handlePasswordSubmit = () => {
+  const handleLogin = () => {
     if (passwordInput === correctPassword) {
       setIsAdmin(true);
-      setShowPasswordPrompt(false);
-      setPasswordInput("");
     } else {
       alert("Wrong password!");
     }
   };
 
   return (
-    <div>
+    <Router>
       <div style={{ padding: "10px", textAlign: "center" }}>
-        {isAdmin ? (
-          <button onClick={() => setIsAdmin(false)}>🔙 View Customer Menu</button>
-        ) : (
-          <button onClick={() => setShowPasswordPrompt(true)}>🛠️ Admin Login</button>
-        )}
+        <Link to="/">🏠 Customer Menu</Link> | <Link to="/admin">🛠️ Admin Dashboard</Link>
       </div>
 
-      {showPasswordPrompt && (
-        <div style={{ textAlign: "center", marginBottom: "10px" }}>
-          <input
-            type="password"
-            placeholder="Enter admin password"
-            value={passwordInput}
-            onChange={(e) => setPasswordInput(e.target.value)}
-          />
-          <button onClick={handlePasswordSubmit}>Login</button>
-        </div>
-      )}
-
-      {isAdmin ? <AdminPage /> : <CustomerMenu />}
-    </div>
+      <Routes>
+        <Route path="/" element={<CustomerMenu />} />
+        <Route
+          path="/admin"
+          element={
+            isAdmin ? (
+              <AdminPage />
+            ) : (
+              <div style={{ textAlign: "center", marginTop: "20px" }}>
+                <h2>Enter Admin Password</h2>
+                <input
+                  type="password"
+                  placeholder="Password"
+                  value={passwordInput}
+                  onChange={(e) => setPasswordInput(e.target.value)}
+                />
+                <button onClick={handleLogin} style={{ marginLeft: "10px" }}>
+                  Login
+                </button>
+              </div>
+            )
+          }
+        />
+      </Routes>
+    </Router>
   );
 }
 
