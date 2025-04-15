@@ -31,7 +31,7 @@ function App() {
       "Hello! I’d like to place an order:\\n\\n" +
       order.map((item) => `- ${item.name} ($${item.price})`).join("\\n") +
       "\\n\\nThank you!";
-    const phone = "+2126396241710"; // Replace with your WhatsApp number
+    const phone = "+212639624171"; // Replace with your WhatsApp number
     const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
     window.open(url, "_blank");
   };
